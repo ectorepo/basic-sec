@@ -1,0 +1,34 @@
+#+title:     Basic Sec Repo's
+#+author:    David Conner
+#+email:     noreply@te.xel.io
+
+* How you catch their hand in the cookie jar:
+
+If you publish your dotfiles to the internet, you're probably going to want to:
+
++ Use [[https://selinuxproject.org/page/Main_Page][SE Linux]].
+  - I'm not a Chef user, but this video and [[https://github.com/sous-chefs/selinux][this repo]] should get you started.
+  - *TLDR:* SE Linux turns the kernel into a giant modular synth, where
+    inputs/outputs are authorized.
++ Become more aware of [[https://www.youtube.com/playlist?list=PLEJEA9mYfeKidV28y542zNwCSJ02j63ih][Data Forensics]] and OSINT
++ Keep SSH off when you're not using it...
+  - This gets harder when you start doing more advanced net-fu.
++ Avoid Wifi networks (even disabling wifi at home or the office)
+  - Recently discovered [[https://arstechnica.com/gadgets/2021/05/farewell-to-firewalls-wi-fi-bugs-open-network-devices-to-remote-hacks/][Frag Attacks]], have been an issue for decades
+  - *TLDR:* wifi is too good to be true
++ Run containerized apps, even Emacs, from within Docker containers or Minikube
+  - This provides an extra layer of security when used with SE Linux
++ Use an on-premises security appliance like TSE: [[https://securityonionsolutions.com/][The Security Onion]]
+  - And ship your logs.
+  - You'll need to configure an OpenWRT router to duplex traffic. You'll need
+    about $150 for that And about $500 for hardware/storage to run the
+    appliance.
+  - Assume that the government is already watching, but notice how the police
+    NEVER show up at your house to help you out. This is a second-amendment
+    issue. You want protection at your home when they aren't going to tell
+    you how they're "protecting" you.
+  - The threat is not the government, btw. The real threats are tools in the
+    hands of cyber-criminals. When someone is hacking you or your private info,
+    you will always be three steps behind and left wondering "how did they beat
+    me? how did they know? did they know?" That's the dead giveaway, but it's too late.
++ Use SE Linux
