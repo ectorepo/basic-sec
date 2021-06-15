@@ -7,4 +7,7 @@
   <project path="BlackDragon"
            name="Cyber-Guy1/BlackDragon"
            remote="github" />
+  <project path="selinux-chef"
+           name="sous-chefs/selinux"
+           remote="github" />
 </manifest>
