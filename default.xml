@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest>
+  <include name="_remotes" />
+  <project path="securityonion"
+           name="Security-Onion-Solutions/securityonion"
+           remote="github" />
+  <project path="BlackDragon"
+           name="Cyber-Guy1/BlackDragon"
+           remote="github" />
+</manifest>
