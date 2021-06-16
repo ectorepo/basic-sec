@@ -1,4 +1,4 @@
-#+title:     Basic Sec Repo's
+#+title:     Ectorepo: Basic Sec
 #+author:    David Conner
 #+email:     noreply@te.xel.io
 
