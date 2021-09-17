@@ -20,6 +20,7 @@ If you publish your dotfiles to the internet, you're probably going to want to:
   - This provides an extra layer of security when used with SE Linux
 + Use an on-premises security appliance like TSE: [[https://securityonionsolutions.com/][The Security Onion]]
   - And ship your logs.
+  - Other security appliances can be found at [[https://github.com/aboutsecurity/blueteam_homelabs][aboutsecurity/blueteam_homelab]].
   - You'll need to configure an OpenWRT router to duplex traffic. You'll need
     about $150 for that And about $500 for hardware/storage to run the
     appliance.
@@ -31,4 +32,6 @@ If you publish your dotfiles to the internet, you're probably going to want to:
     hands of cyber-criminals. When someone is hacking you or your private info,
     you will always be three steps behind and left wondering "how did they beat
     me? how did they know? did they know?" That's the dead giveaway, but it's too late.
+
 + Use SE Linux
++ [[https://docs.cilium.io/en/v1.10/][Cilium]] looks interesting, but I'm not sure why I would run it on my laptop...

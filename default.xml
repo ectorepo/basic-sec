@@ -10,4 +10,7 @@
   <project path="selinux-chef"
            name="sous-chefs/selinux"
            remote="github" />
+  <project path="cilium"
+           name="cilium/cilium"
+           remote="github" />
 </manifest>
