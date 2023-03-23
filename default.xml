@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest>
-  <include name="_remotes" />
-  <project path="securityonion"
-           name="Security-Onion-Solutions/securityonion"
-           remote="github" />
-  <project path="BlackDragon"
-           name="Cyber-Guy1/BlackDragon"
-           remote="github" />
-  <project path="selinux-chef"
-           name="sous-chefs/selinux"
-           remote="github" />
-  <project path="cilium"
-           name="cilium/cilium"
-           remote="github" />
+  <include name="_remotes"/>
+  <project path="securityonion" name="Security-Onion-Solutions/securityonion" remote="github"/>
+  <project path="BlackDragon" name="Cyber-Guy1/BlackDragon" remote="github"/>
+  <project path="selinux-chef" name="sous-chefs/selinux" remote="github"/>
+  <project path="cilium" name="cilium/cilium" remote="github"/>
 </manifest>
