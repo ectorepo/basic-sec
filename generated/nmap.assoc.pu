@@ -1,0 +1,514 @@
+@startuml
+
+class address {
+    +addr : str
+    +addrtype : attr_type
+    +vendor : str
+    --
+    addrtype: ipv4,ipv6,macb
+}
+class cpe {
+    +value : str
+}
+class debugging {
+    +level : int
+}
+class distance {
+    +value : int
+}
+class elem {
+    +key : str
+    +content : anyType[]
+}
+class extraports {
+    +extrareasons : extrareasons[]
+    +state : str
+    +count : int
+}
+extrareasons }o--* extraports
+
+class extrareasons {
+    +reason : str
+    +count : int
+    +proto : port_protocols
+    +ports : str
+    --
+    no test XML with extrareasons.ports
+}
+class finished {
+    +time : int
+    +timestr : str
+    +elapsed : int
+    +summary : str
+    +exit : finished_exit
+    +errormsg : str
+}
+finished_exit --- finished
+
+class hop {
+    +ttl : int
+    +rtt : float
+    +ipaddr : str
+    +host : str
+}
+
+class host {
+    +status : status
+    +address : address[]
+    +hostnames : hostnames[]
+    +smurf : smurf[]
+    +ports : ports[]
+    +os : os[]
+    +distance : distance[]
+    +uptime : uptime[]
+    +tcpsequence : tcpsequence[]
+    +ipidsequence : ipidsequence[]
+    +tcptssequence : tcptssequence[]
+    +hostscript : hostscript[]
+    +trace : trace[]
+    +times : times
+    +starttime : int
+    +endtime : int
+    +timedout : bool
+    +comment : str
+}
+
+address }o--* host
+hostname }o--* host
+smurf }o--* host
+ports }o--* host
+os }o--* host
+tcpsequence }o--* host
+ipidsequence }o--* host
+tcptssequence }o--* host
+uptime }o--* host
+hostscript }o--* host
+trace }o--* host
+times ||--* host
+
+
+class hosthint {
+    +status : status
+    +address : address[]
+    +hostnames : hostnames
+}
+
+status ||--* host
+status ||--* hosthint
+
+
+address }|--* hosthint
+hostnames }--* hosthint
+
+class hostname {
+    +name : str
+    +type : hostname_types
+}
+hostname_types --- hostname
+
+class hostnames {
+    +hostname : hostname[]
+}
+
+hostname }o--* hostnames
+
+class hosts {
+    +up : int
+    +down : int
+    +total : int
+}
+class hostscript {
+    +script : script[]
+}
+
+class ipidsequence {
+    +class : str
+    +values : str
+    --
+    values: comma-separated hex
+}
+
+class nmaprun {
+    +scaninfo : scaninfo[]
+    +verbose : verbose
+    +debugging : debugging
+    +target : target[]
+    +taskbegin : taskbegin[]
+    +taskprogress : taskprogress[]
+    +taskend : taskend[]
+    +hosthint : hosthint[]
+    +prescript : prescript[]
+    +postscript : postscript[]
+    +host : host[]
+    +output : output[]
+    +runstats : runstats
+    +scanner : nmaprun_scanner
+    +args : str
+    +start : int
+    +startstr : str
+    +version : str
+    +profile_name : str
+    +xmloutputversion : str
+    --
+    args is the full nmap invocation
+}
+
+host }o--o nmaprun
+output }o--* nmaprun
+scaninfo }o--* nmaprun
+target }o--* nmaprun
+taskbegin }o--* nmaprun
+taskprogress }o--* nmaprun
+taskend }o--* nmaprun
+runstats ||--* nmaprun
+prescript }o--* nmaprun
+postscript }o--* nmaprun
+
+class os {
+    +portused : portused[]
+    +osmatch : osmatch[]
+    +osfingerprint : osfingerprint[]
+}
+
+portused |o--* os
+osmatch |o--* os
+osfingerprint |o--* os
+
+class osclass {
+    +cpe : str[]
+    +vendor : str
+    +osgen : str
+    +type : str
+    +accuracy : str
+    +osfamily : str
+    --
+    accuracy may be numeric
+    cpe is more than str[]
+}
+
+cpe }|--* osclass
+
+class osfingerprint {
+    +fingerprint : str
+    --
+    no examples of fingerprints
+    in ./zenmap/test
+}
+
+class osmatch {
+    +osclass : osclass[]
+    +name : str
+    +accuracy : int
+    +line : int
+    --
+    accuracy seems to be reported as int
+    but ->accuracy is a double[]
+}
+
+osclass }o--* osmatch 
+
+class output {
+    +type : output_type
+    +content : anyType[]
+}
+
+class owner {
+    +name : str
+}
+
+class port {
+    +state : state
+    +owner : owner
+    +service : service
+    +script : script[]
+    +protocol : port_protocols
+    +portid : int
+}
+
+service |o--* port
+owner |o--* port
+state ||--* port
+
+class ports {
+    +extraports : extraports[]
+    +port : port[]
+}
+
+port }o--* ports
+extraports }o--* ports
+
+class portused {
+    +state : str
+    +proto : port_protocols
+    +portid : int
+}
+
+class postscript {
+    +script : script[]
+}
+
+class prescript {
+    +script : script[]
+}
+
+class runstats {
+    +finished : finished
+    +hosts : hosts
+}
+
+hosts ||--*  runstats
+finished ||--* runstats
+
+class scaninfo {
+    +type : scan_types
+    +scanflags : str
+    +protocol : port_protocols
+    +numservices : int
+    +services : str
+    --
+    services: port ranges
+    comma-separated
+    ranges marked as n-m
+}
+
+
+port_protocols -- scaninfo
+scan_types -- scaninfo
+
+class script {
+    +id : str
+    +output : str
+    +content : anyType[]
+    --
+    (content via #PCDATA)
+    --
+    scripts can contain
+    table/elem/other tags
+}
+
+table }o--* script
+elem }o--* script
+script }|--* hostscript
+script }|--* prescript
+script }|--* postscript
+
+class service {
+    +cpe : str[]
+    +name : str
+    +conf : service_confs
+    +method : service_method
+    +version : str
+    +product : str
+    +extrainfo : str
+    +tunnel : service_tunnel
+    +proto : service_proto
+    +rpcnum : int
+    +lowver : int
+    +highver : int
+    +hostname : str
+    +ostype : str
+    +devicetype : str
+    +servicefp : str
+    --
+    servicefp contains encoded chars
+    rpcnum is numeric
+}
+
+cpe ||--* service
+service_method --- service
+service_tunnel --- service
+service_proto --- service
+
+
+class smurf {
+    +responses : int
+}
+
+class state {
+    +state : str
+    +reason : str
+    +reason_ttl : str
+    +reason_ip : str
+    --
+    reason should be an enum,
+    but isn't in the XML
+    --
+    reason_ttl could be int
+}
+
+class status {
+    +state : host_states
+    +reason : str
+    +reason_ttl : str
+    --
+    reason_ttl could be int
+}
+
+host_states --- status
+
+class table {
+    +table : table[]
+    +elem : elem[]
+    +key : str
+    --
+    These are Lua tables
+    --
+    The definitions are found in
+    scripts/*.nse
+}
+
+table }o--* table
+elem }o--* table
+
+class target {
+    +specification : str
+    +status : target_status
+    +reason : target_reason
+}
+
+target_status --- target
+              
+class taskbegin {
+    +task : str
+    +time : int
+    +extrainfo : str
+}
+
+class taskend {
+    +task : str
+    +time : int
+    +extrainfo : str
+}
+
+class taskprogress {
+    +task : str
+    +time : int
+    +percent : float
+    +remaining : int
+    +etc : int
+}
+
+
+
+class tcpsequence {
+    +index : int
+    +difficulty : str
+    +values : str
+    --
+    values: comma-separated hex 
+}
+
+class tcptssequence {
+    +class : str
+    +values : str
+    --
+    values: comma-separated hex 
+}
+
+class times {
+    +srtt : int
+    +rttvar : int
+    +to : int
+    --
+    srtt: Smoothed rtt estimate
+    rttvar: Rout trip time variance
+    timeout: Current timeout threshold (microseconds)
+}
+
+class trace {
+    +hop : hop[]
+    +proto : str
+    +port : int
+    --
+    proto: layer 4 protocol
+}
+
+hop }o--* trace
+
+class uptime {
+    +seconds : int
+    +lastboot : str
+}
+
+class verbose {
+    +level : int
+}
+
+enum attr_type {
+    ipv4 = ipv4
+    ipv6 = ipv6
+    mac = mac
+}
+enum finished_exit {
+    error = error
+    success = success
+}
+enum host_states {
+    up = up
+    down = down
+    unknown = unknown
+    skipped = skipped
+}
+enum hostname_types {
+    user = user
+    PTR = PTR
+}
+enum nmaprun_scanner {
+    nmap = nmap
+}
+enum output_type {
+    interactive = interactive
+}
+enum port_protocols {
+    ip = ip
+    tcp = tcp
+    udp = udp
+    sctp = sctp
+}
+enum scan_types {
+    syn = syn
+    ack = ack
+    bounce = bounce
+    connect = connect
+    null = null
+    xmas = xmas
+    window = window
+    maimon = maimon
+    fin = fin
+    udp = udp
+    sctpinit = sctpinit
+    sctpcookieecho = sctpcookieecho
+    ipproto = ipproto
+}
+enum service_confs {
+    0 = 0
+    1 = 1
+    2 = 2
+    3 = 3
+    4 = 4
+    5 = 5
+    6 = 6
+    7 = 7
+    8 = 8
+    9 = 9
+    10 = 10
+}
+enum service_method {
+    table = table
+    probed = probed
+}
+enum service_proto {
+    rpc = rpc
+}
+enum service_tunnel {
+    ssl = ssl
+}
+enum target_reason {
+    invalid = invalid
+}
+enum target_status {
+    skipped = skipped
+}
+
+
+@enduml

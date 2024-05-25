@@ -1,0 +1,345 @@
+@startuml
+
+class address {
+    +addr : string
+    +addrtype : attr_type
+    +vendor : anySimpleType
+}
+enum attr_bool {
+    true = true
+    false = false
+}
+enum attr_type {
+    ipv4 = ipv4
+    ipv6 = ipv6
+    mac = mac
+}
+class cpe {
+    +value : string
+}
+class debugging {
+    +level : string
+}
+class distance {
+    +value : string
+}
+class elem {
+    +key : anySimpleType
+    +content : anyType[]
+}
+class extraports {
+    +extrareasons : extrareasons[]
+    +state : string
+    +count : string
+}
+class extrareasons {
+    +reason : anySimpleType
+    +count : anySimpleType
+    +proto : port_protocols
+    +ports : anySimpleType
+}
+class finished {
+    +time : string
+    +timestr : anySimpleType
+    +elapsed : string
+    +summary : anySimpleType
+    +exit : finished_exit
+    +errormsg : anySimpleType
+}
+enum finished_exit {
+    error = error
+    success = success
+}
+class hop {
+    +ttl : anySimpleType
+    +rtt : anySimpleType
+    +ipaddr : anySimpleType
+    +host : anySimpleType
+}
+class host {
+    +status : status
+    +address : address[]
+    +hostnames : hostnames[]
+    +smurf : smurf[]
+    +ports : ports[]
+    +os : os[]
+    +distance : distance[]
+    +uptime : uptime[]
+    +tcpsequence : tcpsequence[]
+    +ipidsequence : ipidsequence[]
+    +tcptssequence : tcptssequence[]
+    +hostscript : hostscript[]
+    +trace : trace[]
+    +times : times
+    +starttime : string
+    +endtime : string
+    +timedout : attr_bool
+    +comment : anySimpleType
+}
+enum host_states {
+    up = up
+    down = down
+    unknown = unknown
+    skipped = skipped
+}
+class hosthint {
+    +status : status
+    +address : address[]
+    +hostnames : hostnames
+}
+class hostname {
+    +name : anySimpleType
+    +type : hostname_types
+}
+enum hostname_types {
+    user = user
+    PTR = PTR
+}
+class hostnames {
+    +hostname : hostname[]
+}
+class hosts {
+    +up : string
+    +down : string
+    +total : string
+}
+class hostscript {
+    +script : script[]
+}
+class ipidsequence {
+    +class : anySimpleType
+    +values : anySimpleType
+}
+class nmaprun {
+    +scaninfo : scaninfo[]
+    +verbose : verbose
+    +debugging : debugging
+    +target : target[]
+    +taskbegin : taskbegin[]
+    +taskprogress : taskprogress[]
+    +taskend : taskend[]
+    +hosthint : hosthint[]
+    +prescript : prescript[]
+    +postscript : postscript[]
+    +host : host[]
+    +output : output[]
+    +runstats : runstats
+    +scanner : nmaprun_scanner
+    +args : anySimpleType
+    +start : string
+    +startstr : anySimpleType
+    +version : anySimpleType
+    +profile_name : anySimpleType
+    +xmloutputversion : anySimpleType
+}
+enum nmaprun_scanner {
+    nmap = nmap
+}
+class os {
+    +portused : portused[]
+    +osmatch : osmatch[]
+    +osfingerprint : osfingerprint[]
+}
+class osclass {
+    +cpe : string[]
+    +vendor : anySimpleType
+    +osgen : anySimpleType
+    +type : anySimpleType
+    +accuracy : anySimpleType
+    +osfamily : anySimpleType
+}
+class osfingerprint {
+    +fingerprint : anySimpleType
+}
+class osmatch {
+    +osclass : osclass[]
+    +name : anySimpleType
+    +accuracy : string
+    +line : string
+}
+class output {
+    +type : output_type
+    +content : anyType[]
+}
+enum output_type {
+    interactive = interactive
+}
+class owner {
+    +name : anySimpleType
+}
+class port {
+    +state : state
+    +owner : owner
+    +service : service
+    +script : script[]
+    +protocol : port_protocols
+    +portid : string
+}
+enum port_protocols {
+    ip = ip
+    tcp = tcp
+    udp = udp
+    sctp = sctp
+}
+class ports {
+    +extraports : extraports[]
+    +port : port[]
+}
+class portused {
+    +state : string
+    +proto : port_protocols
+    +portid : string
+}
+class postscript {
+    +script : script[]
+}
+class prescript {
+    +script : script[]
+}
+class runstats {
+    +finished : finished
+    +hosts : hosts
+}
+enum scan_types {
+    syn = syn
+    ack = ack
+    bounce = bounce
+    connect = connect
+    null = null
+    xmas = xmas
+    window = window
+    maimon = maimon
+    fin = fin
+    udp = udp
+    sctpinit = sctpinit
+    sctpcookieecho = sctpcookieecho
+    ipproto = ipproto
+}
+class scaninfo {
+    +type : scan_types
+    +scanflags : anySimpleType
+    +protocol : port_protocols
+    +numservices : string
+    +services : anySimpleType
+}
+class script {
+    +id : anySimpleType
+    +output : anySimpleType
+    +content : anyType[]
+}
+class service {
+    +cpe : string[]
+    +name : anySimpleType
+    +conf : service_confs
+    +method : service_method
+    +version : anySimpleType
+    +product : anySimpleType
+    +extrainfo : anySimpleType
+    +tunnel : service_tunnel
+    +proto : service_proto
+    +rpcnum : string
+    +lowver : string
+    +highver : string
+    +hostname : anySimpleType
+    +ostype : anySimpleType
+    +devicetype : anySimpleType
+    +servicefp : anySimpleType
+}
+enum service_confs {
+    0 = 0
+    1 = 1
+    2 = 2
+    3 = 3
+    4 = 4
+    5 = 5
+    6 = 6
+    7 = 7
+    8 = 8
+    9 = 9
+    10 = 10
+}
+enum service_method {
+    table = table
+    probed = probed
+}
+enum service_proto {
+    rpc = rpc
+}
+enum service_tunnel {
+    ssl = ssl
+}
+class smurf {
+    +responses : string
+}
+class state {
+    +state : string
+    +reason : anySimpleType
+    +reason_ttl : anySimpleType
+    +reason_ip : anySimpleType
+}
+class status {
+    +state : host_states
+    +reason : anySimpleType
+    +reason_ttl : anySimpleType
+}
+class table {
+    +table : table[]
+    +elem : elem[]
+    +key : anySimpleType
+}
+class target {
+    +specification : anySimpleType
+    +status : target_status
+    +reason : target_reason
+}
+enum target_reason {
+    invalid = invalid
+}
+enum target_status {
+    skipped = skipped
+}
+class taskbegin {
+    +task : anySimpleType
+    +time : string
+    +extrainfo : anySimpleType
+}
+class taskend {
+    +task : anySimpleType
+    +time : string
+    +extrainfo : anySimpleType
+}
+class taskprogress {
+    +task : anySimpleType
+    +time : string
+    +percent : string
+    +remaining : string
+    +etc : string
+}
+class tcpsequence {
+    +index : string
+    +difficulty : anySimpleType
+    +values : anySimpleType
+}
+class tcptssequence {
+    +class : anySimpleType
+    +values : anySimpleType
+}
+class times {
+    +srtt : anySimpleType
+    +rttvar : anySimpleType
+    +to : anySimpleType
+}
+class trace {
+    +hop : hop[]
+    +proto : anySimpleType
+    +port : anySimpleType
+}
+class uptime {
+    +seconds : string
+    +lastboot : anySimpleType
+}
+class verbose {
+    +level : string
+}
+
+@enduml

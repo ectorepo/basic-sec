@@ -1,0 +1,295 @@
+@startuml
+
+class address {
+    +addr : str
+    +addrtype : attr_type
+    +vendor : str
+    --
+    addrtype: ipv4,ipv6,macb
+}
+
+
+class extraports {
+    +extrareasons : extrareasons[]
+    +state : str
+    +count : int
+}
+extrareasons }o--* extraports
+
+class extrareasons {
+    +reason : str
+    +count : int
+    +proto : port_protocols
+    +ports : str
+    --
+    no test XML with extrareasons.ports
+}
+class hop {
+    +ttl : int
+    +rtt : float
+    +ipaddr : str
+    +host : str
+}
+
+class host {
+    +status : status
+    +address : address[]
+    +hostnames : hostnames[]
+    +smurf : smurf[]
+    +ports : ports[]
+    +os : os[]
+    +distance : distance[]
+    +uptime : uptime[]
+    +tcpsequence : tcpsequence[]
+    +ipidsequence : ipidsequence[]
+    +tcptssequence : tcptssequence[]
+    +hostscript : hostscript[]
+    +trace : trace[]
+    +times : times
+    +starttime : int
+    +endtime : int
+    +timedout : bool
+    +comment : str
+}
+
+address }o--* host
+hostnames }o--* host
+smurf }o--* host
+ports }o--* host
+os }o--* host
+tcpsequence }o--* host
+ipidsequence }o--* host
+tcptssequence }o--* host
+uptime }o--* host
+hostscript }o--* host
+trace }o--* host
+times ||--* host
+
+class hosthint {
+    +status : status
+    +address : address[]
+    +hostnames : hostnames
+}
+
+status ||--* host
+status ||--* hosthint
+address }|--* hosthint
+hostnames }--* hosthint
+
+class hostname {
+    +name : str
+    +type : hostname_types
+}
+hostname_types --- hostname
+
+class hostnames {
+    +hostname : hostname[]
+}
+
+hostname }o--* hostnames
+
+class hostscript {
+    +script : script[]
+}
+
+class ipidsequence {
+    +class : str
+    +values : str
+    --
+    values: comma-separated hex
+}
+
+class nmaprun {
+    +host : host[]
+    --
+    args is the full nmap invocation
+}
+
+host }o--o nmaprun
+
+class os {
+    +portused : portused[]
+    +osmatch : osmatch[]
+    +osfingerprint : osfingerprint[]
+}
+
+portused |o--* os
+osmatch |o--* os
+osfingerprint |o--* os
+
+class osclass {
+    +cpe : str[]
+    +vendor : str
+    +osgen : str
+    +type : str
+    +accuracy : str
+    +osfamily : str
+    --
+    accuracy may be numeric
+    cpe is more than str[]
+}
+
+cpe }|--* osclass
+
+class osfingerprint {
+    +fingerprint : str
+    --
+    no examples of fingerprints
+    in ./zenmap/test
+}
+
+class osmatch {
+    +osclass : osclass[]
+    +name : str
+    +accuracy : int
+    +line : int
+    --
+    accuracy seems to be reported as int
+    but ->accuracy is a double[]
+}
+
+osclass }o--* osmatch 
+
+class port {
+    +state : state
+    +owner : owner
+    +service : service
+    +script : script[]
+    +protocol : port_protocols
+    +portid : int
+}
+
+service |o--* port
+owner |o--* port
+state ||--* port
+
+class ports {
+    +extraports : extraports[]
+    +port : port[]
+}
+
+port }o--* ports
+extraports }o--* ports
+
+class portused {
+    +state : str
+    +proto : port_protocols
+    +portid : int
+}
+
+class service {
+    +cpe : str[]
+    +name : str
+    +conf : service_confs
+    +method : service_method
+    +version : str
+    +product : str
+    +extrainfo : str
+    +tunnel : service_tunnel
+    +proto : service_proto
+    +rpcnum : int
+    +lowver : int
+    +highver : int
+    +hostname : str
+    +ostype : str
+    +devicetype : str
+    +servicefp : str
+    --
+    servicefp contains encoded chars
+    rpcnum is numeric
+}
+
+cpe ||--* service
+service_method --- service
+service_tunnel --- service
+service_proto --- service
+
+
+class smurf {
+    +responses : int
+}
+
+class state {
+    +state : str
+    +reason : str
+    +reason_ttl : str
+    +reason_ip : str
+    --
+    reason should be an enum,
+    but isn't in the XML
+    --
+    reason_ttl could be int
+}
+
+class status {
+    +state : host_states
+    +reason : str
+    +reason_ttl : str
+    --
+    reason_ttl could be int
+}
+
+host_states --- status
+
+class tcpsequence {
+    +index : int
+    +difficulty : str
+    +values : str
+    --
+    values: comma-separated hex 
+}
+
+class tcptssequence {
+    +class : str
+    +values : str
+    --
+    values: comma-separated hex 
+}
+
+class times {
+    +srtt : int
+    +rttvar : int
+    +to : int
+    --
+    srtt: Smoothed rtt estimate
+    rttvar: Rout trip time variance
+    timeout: Current timeout threshold (microseconds)
+}
+
+class trace {
+    +hop : hop[]
+    +proto : str
+    +port : int
+    --
+    proto: layer 4 protocol
+}
+
+hop }o--* trace
+
+class uptime {
+    +seconds : int
+    +lastboot : str
+}
+
+enum host_states {
+    up = up
+    down = down
+    unknown = unknown
+    skipped = skipped
+}
+enum hostname_types {
+    user = user
+    PTR = PTR
+}
+enum service_method {
+    table = table
+    probed = probed
+}
+enum service_proto {
+    rpc = rpc
+}
+enum service_tunnel {
+    ssl = ssl
+}
+
+@enduml
