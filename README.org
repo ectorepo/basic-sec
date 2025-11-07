@@ -1,7 +1,7 @@
 #+title:     Ectorepo: Basic Sec
 #+author:    David Conner
 #+email:     noreply@te.xel.io
-#+PROPERTY: header-args :comments none
+#+PROPERTY: header-args+ :comments none
 
 * How you catch their hand in the cookie jar:
 
